@@ -1,0 +1,57 @@
+public static int prince(int[][] drm, int i, int j){
+        int count;
+        int princePositionValue = drm[i][j];
+        count = recPrince( drm, i, j,princePositionValue);
+
+        if (count != Integer.MAX_VALUE)
+            return count;
+        else
+            return -1;
+
+    }
+
+    public static int recPrince(int[][] drm, int i, int j,int princePositionValue){
+        if (i<0 || i>=drm.length|| j<0 || j>=drm.length)
+            return Integer.MAX_VALUE;
+        int nextMoveValue = drm[i][j];
+        if (nextMoveIsLegel(nextMoveValue, princePositionValue))
+        {
+
+            {
+                if (nextMoveValue == -1)
+                {
+
+                    return 0;
+                }
+                else
+                {
+                    princePositionValue = nextMoveValue; 
+                    int princeGoingLeft,princeGoingRight, princeGoingDown, princeGoingUp, shortestCount;
+                    drm[i][j] = -2;
+                    princeGoingLeft = 1+ recPrince(drm, i-1, j,princePositionValue);
+                    princeGoingRight = 1+ recPrince(drm, i+1, j, princePositionValue);
+                    princeGoingDown = 1+ recPrince(drm, i, j+1, princePositionValue);
+                    princeGoingUp = 1+ recPrince(drm, i, j-1, princePositionValue);
+                    shortestCount = Math.min(
+                        Math.min(princeGoingLeft, princeGoingRight),
+                        Math.min(princeGoingDown, princeGoingUp)            );
+                    return shortestCount;
+
+                }
+            }
+        }
+        else
+            return Integer.MAX_VALUE;
+    }
+
+    private static boolean nextMoveIsLegel( int nextMoveValue, int princePositionValue){
+
+        if (nextMoveValue == -1)
+            return true;
+        if ( nextMoveValue != -2){
+            int MovesValueDifference = princePositionValue - nextMoveValue;
+            if (Math.abs(MovesValueDifference)<=1 || MovesValueDifference == 2)
+                return true;  
+        }
+        return false;
+    }
